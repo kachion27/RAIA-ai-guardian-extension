@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAIA – Real-time AI Anti-Scam</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container" id="app">
+        <!-- Header Section -->
+        <header>
+            <div class="logo-wrapper">
+                <img src="./img/popup.png" alt="Logo" class="logo">
+                <div class="logo-glow"></div>
+            </div>
+            <h1>RAIA <br> Real-time AI Anti-Scam</h1>
+            <p class="subtitle">Bảo vệ chống lừa đảo & Deepfake</p>
+        </header>
+
+        <!-- Status Section -->
+        <div class="status-card">
+            <div class="status-indicator">
+                <span class="status-dot pulse" id="statusDot"></span>
+                <span id="statusText">Hệ thống đang hoạt động</span>
+            </div>
+
+            <div class="score-container">
+                <div class="score-header">
+                    <span>Điểm An Toàn AI</span>
+                    <span id="scoreValue">--%</span>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+
+                <!-- NEW REASON BOX -->
+                <div class="reason-box" id="reasonBox">
+                    Đang chờ phân tích...
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls Section -->
+        <div class="controls">
+            <div class="toggle-group">
+                <span class="label">Kích hoạt bảo vệ</span>
+                <label class="switch">
+                    <input type="checkbox" id="protectionToggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <button id="scanBtn" class="btn-primary">
+                <span class="btn-text">QUÉT NGAY</span>
+                <div class="btn-glow"></div>
+            </button>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <span class="version">Phiên bản v1.0.0 DEMO BETA</span>
+            <a href="#" class="settings-link">Cài đặt nâng cao</a>
+            <div class="footer-dev">
+                <h3>Dev by NHUDANGKOCHO - 27NETTEAM</h3>
+            </div>
+        </footer>
+    </div>
+    <script src="popup.js"></script>
+</body>
+
+</html>
