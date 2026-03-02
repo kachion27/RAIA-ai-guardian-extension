@@ -7,7 +7,7 @@
   <h1>🛡️ RAIA – Real-time AI Anti-Scam</h1>
   <p><i>Lá chắn Trí tuệ Nhân tạo thời gian thực sử dụng Gemini 3 để bảo vệ bạn khỏi lừa đảo kỹ thuật số.</i></p>
 
-  <img src="https://img.shields.io/badge/Version-2.0.0-blue?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/VERSION-1.0.0_DEMO_BETA-blue?style=for-the-badge" alt="Version">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
   <img src="https://img.shields.io/badge/AI_Model-Gemini--3--Flash-7b2eff?style=for-the-badge" alt="Model">
   <img src="https://img.shields.io/badge/SDK-@google/genai-orange?style=for-the-badge" alt="SDK">
