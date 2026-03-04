@@ -1,31 +1,45 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+  const toggle = document.querySelector("#protectionToggle");
+  const scanBtn = document.querySelector("#scanBtn");
+
+  // Load trạng thái ban đầu từ background
   loadState();
 
-  document.querySelector("#protectionToggle")
-    .addEventListener("change", (e) => {
+  // ===============================
+  // TOGGLE ON / OFF
+  // ===============================
+  toggle.addEventListener("change", (e) => {
 
-      chrome.runtime.sendMessage({
-        type: "TOGGLE_ENABLED",
-        enabled: e.target.checked
-      });
-
+    chrome.runtime.sendMessage({
+      type: "TOGGLE_ENABLED",
+      enabled: e.target.checked
     });
 
-  document.querySelector("#scanBtn")
-    .addEventListener("click", () => {
+  });
 
-      updatePopupUI(null, "Đang phân tích lại...");
+  // ===============================
+  // QUÉT NGAY
+  // ===============================
+  scanBtn.addEventListener("click", () => {
 
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        chrome.tabs.sendMessage(tabs[0].id, {
-          type: "FORCE_ANALYZE"
-        });
+    if (!toggle.checked) return;
+
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (!tabs[0]) return;
+
+      chrome.tabs.sendMessage(tabs[0].id, {
+        type: "FORCE_ANALYZE"
       });
-
     });
+
+  });
+
 });
 
+
+// ===============================
+// LOAD STATE TỪ BACKGROUND
 // ===============================
 function loadState() {
 
@@ -35,51 +49,50 @@ function loadState() {
 
     const toggle = document.querySelector("#protectionToggle");
 
-    // Set toggle trước
     toggle.checked = state.enabled;
 
-    // Sau đó mới update UI
-    updatePopupUI(state.score, state.reason);
+    updatePopupUI(state.score);
 
   });
+
 }
 
+
+// ===============================
+// LISTEN STATE UPDATE
 // ===============================
 chrome.runtime.onMessage.addListener((msg) => {
 
   if (msg.type === "STATE_UPDATED") {
-    updatePopupUI(msg.state.score, msg.state.reason);
+    updatePopupUI(msg.state.score);
   }
 
 });
 
-// ===============================
-function updatePopupUI(score, reason) {
 
-  const scoreText = document.querySelector("#scoreValue");
-  const progress = document.querySelector("#progressBar");
-  const reasonBox = document.querySelector("#reasonBox");
+// ===============================
+// UPDATE UI
+// ===============================
+function updatePopupUI(score) {
+
   const statusDot = document.querySelector("#statusDot");
   const statusText = document.querySelector("#statusText");
   const toggle = document.querySelector("#protectionToggle");
 
-  // Reset dot
+  // Reset
   statusDot.className = "status-dot pulse";
+  statusDot.style.boxShadow = "none";
 
   // ===============================
-  // PROTECTION OFF
+  // OFF
   // ===============================
   if (!toggle.checked) {
-
-    scoreText.textContent = "--%";
-    progress.style.width = "0%";
-    reasonBox.textContent = "Realtime Protection đang tắt. (NGUY HIỂM CHÚ Ý)";
 
     statusDot.style.background = "var(--danger)";
     statusDot.style.boxShadow = "0 0 10px var(--danger)";
 
     statusText.textContent =
-      "Hệ thống vô hiệu hóa";
+      "Hệ thống vô hiệu hóa (⚠️CHÚ Ý)";
 
     return;
   }
@@ -89,27 +102,21 @@ function updatePopupUI(score, reason) {
   // ===============================
   if (score == null) {
 
-    scoreText.textContent = "--%";
-    progress.style.width = "0%";
-    reasonBox.textContent = reason || "Không có dữ liệu";
-
     statusDot.style.background = "#94a3b8";
-    statusDot.style.boxShadow = "none";
 
-    statusText.textContent = "Không kết nối máy chủ";
+    statusText.textContent =
+      "Không kết nối máy chủ";
 
     return;
   }
 
   // ===============================
-  // PROTECTION ON + CÓ ĐIỂM
+  // ON
   // ===============================
-  scoreText.textContent = score + "%";
-  progress.style.width = score + "%";
-  reasonBox.textContent = reason || "Phân tích hoàn tất.";
-
   statusDot.style.background = "var(--success)";
   statusDot.style.boxShadow = "0 0 10px var(--success)";
 
-  statusText.textContent = "Hệ thống đang hoạt động";
+  statusText.textContent =
+    "Hệ thống đang hoạt động";
+
 }
